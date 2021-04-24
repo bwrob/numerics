@@ -1068,3 +1068,4 @@ venv/Scripts/pip3.exe
 venv/Scripts/python.exe
 venv/Scripts/pythonw.exe
 __pycache__/decorators.cpython-38.pyc
+*.pyc

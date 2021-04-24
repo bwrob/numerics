@@ -1,7 +1,10 @@
-def outside_value_only(f):
+def value_only(f):
     def wrapped(*args, **kwargs):
+        kwargs['debug'] = False
         result = f(*args, **kwargs)
-        value, _ = result
-        return result if __name__ == '__main__' else value
+        try:
+            return result.value
+        except AttributeError:
+            print("Failed in {}".format(f.__name__))
 
     return wrapped
