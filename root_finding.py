@@ -1,5 +1,7 @@
 from math import sin
 
+from decorators import outside_value_only
+
 
 def derivative(f, x, h=0.001):
     return (f(x + h) - f(x - h)) / (2 * h)
@@ -11,6 +13,7 @@ def derivative(f, x, h=0.001):
 # 2. Find a x_0 point "close" to the root
 # 3. Iterate x_{n+1} = x_n - f(x_n)/f'(x_n)
 # 4. x^* = Lim x_n
+@outside_value_only
 def root_newton(f, start_point, epsilon, h=0.000001, debug=False):
     max_iter = 100000
     i = 0
@@ -24,12 +27,13 @@ def root_newton(f, start_point, epsilon, h=0.000001, debug=False):
         next_point = current_point + h * (1 - value_h / (value_h - value))
         if abs(next_point - current_point) < epsilon:
             print(i)
-            return next_point
+            return next_point, []
         else:
             current_point = next_point
-    return None
+    return None, []
 
 
+@outside_value_only
 def root_secant(f, point_zero, point_one, epsilon):
     max_iter = 100000
     i = 0
@@ -40,12 +44,13 @@ def root_secant(f, point_zero, point_one, epsilon):
         point_next = point_one - value_one * (point_one - point_zero) / (value_one - value_zero)
         if abs(point_next - point_one) < epsilon:
             print(i)
-            return point_next
+            return point_next, []
         else:
             point_zero, point_one = point_one, point_next
-    return None
+    return None, []
 
 
+@outside_value_only
 def root_bisection(f, a, b, epsilon=0.0001, weighted=False):
     i = 0
     max_iter = 10000
@@ -58,27 +63,28 @@ def root_bisection(f, a, b, epsilon=0.0001, weighted=False):
     while i < max_iter:
         i += 1
         y_1, y_2 = f(a), f(b)
-        w_1, w_2 = (abs(y_1) / (abs(y_1) + abs(y_2)), abs(y_2) / (abs(y_1) + abs(y_2)) ) if weighted else (1 / 2, 1 / 2)
+        w_1, w_2 = (abs(y_1) / (abs(y_1) + abs(y_2)), abs(y_2) / (abs(y_1) + abs(y_2))) if weighted else (1 / 2, 1 / 2)
         midpoint = w_1 * a + w_2 * b
         y_3 = f(midpoint)
         if abs(a - b) < epsilon:
             print(i)
-            return midpoint
+            return midpoint, []
         if y_1 * y_3 < 0:
             a, b = a, midpoint
         else:
             a, b = b, midpoint
-    return None
+    return None, []
 
 
-g = (lambda x: sin(x))
-accuracy = 0.00001
+if __name__ == '__main__':
+    g = (lambda x: sin(x))
+    accuracy = 0.00001
 
-result = root_newton(g, 0.5, accuracy)
-print("result Newton: {}".format(result))
+    result = root_newton(g, 0.5, accuracy)
+    print("result Newton: {}".format(result))
 
-result = root_secant(g, 3.0, 3.5, accuracy)
-print("result secant: {}".format(result))
+    result = root_secant(g, 3.0, 3.5, accuracy)
+    print("result secant: {}".format(result))
 
-result = root_bisection(g, -0.1, 0.2, accuracy, weighted=False)
-print("result secant: {}".format(result))
+    result = root_bisection(g, -0.1, 0.2, accuracy, weighted=False)
+    print("result bisection: {}".format(result))
