@@ -12,7 +12,7 @@ import collections
 #   y   yes
 #   n   no
 # best to use with default control so that the settings for all functions can be switched at once
-def debugging(control="nyn"):
+def debugging(control="yyn"):
     debug, value, sleep = control
 
     def wrapper(f):
@@ -31,8 +31,5 @@ def debugging(control="nyn"):
     return wrapper
 
 
-# function wrapping data into named tuple type
-def result(**data):
-    Result = collections.namedtuple('Result', data)
-    output = Result._make(data.values())
-    return output
+# named tuple for root-finding output
+RootFindingData = collections.namedtuple('RootFindingData', ["value", "iteration_points", "iteration_no"])

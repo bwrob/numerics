@@ -1,7 +1,7 @@
 import types
 from math import sin
 
-from utils import debugging, result
+from utils import debugging, RootFindingData
 
 
 # Newton Method
@@ -24,12 +24,10 @@ def root_newton(debug, sleep, f, start_point, epsilon, h=0.000001):
         value_h = f(current_point + h)
         next_point = current_point + h * (1 - value_h / (value_h - value))
         if abs(next_point - current_point) < epsilon:
-            return result(value=next_point, iteration_points=points, iter=i)
+            return RootFindingData(value=next_point, iteration_points=points, iteration_no=i)
         else:
             current_point = next_point
-    output = types.SimpleNamespace()
-    output.points = points
-    return output
+    return RootFindingData(value=None, iteration_points=points, iteration_no=i)
 
 
 @debugging()
@@ -45,12 +43,10 @@ def root_secant(debug, sleep, f, point_zero, point_one, epsilon):
             points.append((point_zero, value_zero))
         point_next = point_one - value_one * (point_one - point_zero) / (value_one - value_zero)
         if abs(point_next - point_one) < epsilon:
-            return result(value=point_next, iteration_points=points, iter=i)
+            return RootFindingData(value=point_next, iteration_points=points, iteration_no=i)
         else:
             point_zero, point_one = point_one, point_next
-    output = types.SimpleNamespace()
-    output.points = points
-    return output
+    return RootFindingData(value=None, iteration_points=points, iteration_no=i)
 
 
 @debugging()
@@ -73,14 +69,12 @@ def root_bisection(debug, sleep, f, a, b, epsilon, weighted):
         if debug:
             points.append((midpoint, y_3))
         if abs(a - b) < epsilon:
-            return result(value=midpoint, iteration_points=points, iter=i)
+            return RootFindingData(value=midpoint, iteration_points=points, iteration_no=i)
         if y_1 * y_3 < 0:
             a, b = a, midpoint
         else:
             a, b = b, midpoint
-    output = types.SimpleNamespace()
-    output.points = points
-    return output
+    return RootFindingData(value=None, iteration_points=points, iteration_no=i)
 
 
 if __name__ == '__main__':
