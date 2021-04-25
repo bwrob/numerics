@@ -1,7 +1,7 @@
 import types
 from math import sin
 
-from decorators import value_only
+from decorators import debugging
 
 
 # Newton Method
@@ -10,8 +10,8 @@ from decorators import value_only
 # 2. Find a x_0 point "close" to the root
 # 3. Iterate x_{n+1} = x_n - f(x_n)/f'(x_n)
 # 4. x^* = Lim x_n
-@value_only
-def root_newton(f, start_point, epsilon, debug, h=0.000001):
+@debugging()
+def root_newton(debug, sleep, f, start_point, epsilon, h=0.000001):
     max_iter = 100000
     i = 0
     points = []
@@ -35,8 +35,8 @@ def root_newton(f, start_point, epsilon, debug, h=0.000001):
     return output
 
 
-@value_only
-def root_secant(f, point_zero, point_one, epsilon, debug):
+@debugging()
+def root_secant(debug, sleep, f, point_zero, point_one, epsilon):
     max_iter = 100000
     i = 0
     points = []
@@ -59,8 +59,8 @@ def root_secant(f, point_zero, point_one, epsilon, debug):
     return output
 
 
-@value_only
-def root_bisection(f, a, b, epsilon, weighted, debug):
+@debugging()
+def root_bisection(debug, sleep, f, a, b, epsilon, weighted):
     i = 0
     points = []
     max_iter = 10000
