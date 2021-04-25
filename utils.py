@@ -8,7 +8,7 @@ import collections
 # value - output result only rather than named tuple with auxiliary data:
 #   y   value
 #   n   all data
-# sleep - sleep between iterations fo animation purposes:
+# sleep - sleep between iterations for animation purposes:
 #   y   yes
 #   n   no
 # best to use with default control so that the settings for all functions can be switched at once

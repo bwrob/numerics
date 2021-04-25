@@ -1,4 +1,3 @@
-import types
 from math import sin
 
 from utils import debugging, RootFindingData
@@ -6,10 +5,9 @@ from utils import debugging, RootFindingData
 
 # Newton Method
 # We are considering only single multiplicity isolated real roots
-# 1. Find a suspect interval
-# 2. Find a x_0 point "close" to the root
-# 3. Iterate x_{n+1} = x_n - f(x_n)/f'(x_n)
-# 4. x^* = Lim x_n
+# 1. Find a starting point x_0 "close" to the root
+# 2. Iterate x_{n+1} = x_n - f(x_n)/f'(x_n)
+# 3. x^* = Lim x_n
 @debugging()
 def root_newton(debug, sleep, f, start_point, epsilon, h=0.000001):
     max_iter = 100000
@@ -30,6 +28,11 @@ def root_newton(debug, sleep, f, start_point, epsilon, h=0.000001):
     return RootFindingData(value=None, iteration_points=points, iteration_no=i)
 
 
+# Secant Method
+# We are considering only single multiplicity isolated real roots
+# 1. Find two starting points x_0,x_1 "close" to the root
+# 2. Iterate x_{n+1} = x_n - f(x_n)*(f(x_n) - f(x{n-1}))/(x_n - x_{n-1})
+# 3. x^* = Lim x_n
 @debugging()
 def root_secant(debug, sleep, f, point_zero, point_one, epsilon):
     max_iter = 100000
@@ -49,6 +52,12 @@ def root_secant(debug, sleep, f, point_zero, point_one, epsilon):
     return RootFindingData(value=None, iteration_points=points, iteration_no=i)
 
 
+# Bisection Method
+# We are considering only single multiplicity isolated real roots
+# 1. Find a suspect interval (a,b) for which f(a)*f(b)<0
+# 2. Compute midpoint
+# 3. Choose (a,midpoint) or (midpoint,b) depending on condition 1. Iterate.
+# 4. x^* = lim of midpoints
 @debugging()
 def root_bisection(debug, sleep, f, a, b, epsilon, weighted):
     i = 0
