@@ -14,12 +14,18 @@ import numpy as np
 #   y   value
 #   n   all data
 # best to use with default control so that the settings for all functions can be switched at once
-def debugging(control="yn"):
-    debug, value = control
+def debugging(control="yny"):
+    debug, value, timer = control
 
     def wrapper(f):
         def wrapped(*args, **kwargs):
+            if timer=='y':
+                tic = time.perf_counter()
             result = f(debug, *args, **kwargs)
+            if timer == 'y':
+                toc = time.perf_counter()
+                print("{} evaluated in {} seconds".format(f.__name__, toc - tic))
+
             if value == "y":
                 try:
                     return result.value
