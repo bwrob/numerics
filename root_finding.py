@@ -1,7 +1,7 @@
 import types
 from math import sin
 
-from decorators import debugging
+from utils import debugging, result
 
 
 # Newton Method
@@ -24,10 +24,7 @@ def root_newton(debug, sleep, f, start_point, epsilon, h=0.000001):
         value_h = f(current_point + h)
         next_point = current_point + h * (1 - value_h / (value_h - value))
         if abs(next_point - current_point) < epsilon:
-            output = types.SimpleNamespace()
-            output.value = next_point
-            output.points = points
-            return output
+            return result(value=next_point, iteration_points=points, iter=i)
         else:
             current_point = next_point
     output = types.SimpleNamespace()
@@ -48,10 +45,7 @@ def root_secant(debug, sleep, f, point_zero, point_one, epsilon):
             points.append((point_zero, value_zero))
         point_next = point_one - value_one * (point_one - point_zero) / (value_one - value_zero)
         if abs(point_next - point_one) < epsilon:
-            output = types.SimpleNamespace()
-            output.value = point_next
-            output.points = points
-            return output
+            return result(value=point_next, iteration_points=points, iter=i)
         else:
             point_zero, point_one = point_one, point_next
     output = types.SimpleNamespace()
@@ -79,10 +73,7 @@ def root_bisection(debug, sleep, f, a, b, epsilon, weighted):
         if debug:
             points.append((midpoint, y_3))
         if abs(a - b) < epsilon:
-            output = types.SimpleNamespace()
-            output.value = midpoint
-            output.points = points
-            return output
+            return result(value=midpoint, iteration_points=points, iter=i)
         if y_1 * y_3 < 0:
             a, b = a, midpoint
         else:

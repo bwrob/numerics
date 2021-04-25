@@ -1,3 +1,6 @@
+import collections
+
+
 # decorator for debugging purposes
 # debug - gather debugging info during computation:
 #   y   full
@@ -26,3 +29,10 @@ def debugging(control="nyn"):
         return wrapped
 
     return wrapper
+
+
+# function wrapping data into named tuple type
+def result(**data):
+    Result = collections.namedtuple('Result', data)
+    output = Result._make(data.values())
+    return output
