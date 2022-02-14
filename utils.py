@@ -3,6 +3,7 @@ import time
 
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import numpy as np
 
 
@@ -47,10 +48,15 @@ RootFindingData = collections.namedtuple('RootFindingData', ["value", "iteration
 def animate(data):
     x, y = [point[0] for point in data], [point[1] for point in data]
     colors = cm.rainbow(np.linspace(0, 1, len(y)))
-    ax = plt.axes()
-    for i in range(len(y)):
-        ax.scatter(x[i], y[i], color=colors[i])
-        plt.draw()
-        plt.pause(0.01)
-        if i < 10:
-            time.sleep(0.5)
+    fig = plt.figure()
+    plt.xlim(-1, 1)
+    plt.ylim(-1, 1)
+    graph = plt.scatter([], [])
+
+    def animate(i):
+        graph.set_offsets(np.vstack((x[:i+1], y[:i+1])).T)
+        graph.set_facecolors(colors[:i+1])
+        return graph
+
+    ani = animation.FuncAnimation(fig, animate, repeat=False, interval=200)
+    plt.show()

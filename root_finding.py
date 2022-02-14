@@ -89,7 +89,7 @@ if __name__ == '__main__':
     f = (lambda x: x ** 3 - sin(x))
     g = (lambda x: (x + 2) * (x - 0.5) + sin(x - 0.5))
     func = f
-    accuracy = 0.00000000000001
+    accuracy = 1E-12
     animated = False
 
     result1 = root_newton(func, 1, accuracy)
